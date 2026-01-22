@@ -18,7 +18,7 @@ class EnergyIndicator extends StatelessWidget {
           return Colors.green;
       }
     }
-
+g
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
