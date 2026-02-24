@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
 
 class EnergyIndicator extends StatelessWidget {
-  final EnergyLevel level;
+  final int level;
 
   const EnergyIndicator({super.key, required this.level});
 
+  Color _getColor() {
+    if (level < 33) return Colors.red;
+    if (level < 66) return Colors.orange;
+    return Colors.green;
+  }
+
+  String _getLevelText() {
+    if (level < 33) return 'LOW';
+    if (level < 66) return 'MEDIUM';
+    return 'HIGH';
+  }
+
   @override
   Widget build(BuildContext context) {
-    Color getColor() {
-      switch (level) {
-        case EnergyLevel.low:
-          return Colors.red;
-        case EnergyLevel.medium:
-          return Colors.yellow;
-        case EnergyLevel.high:
-          return Colors.green;
-      }
-    }
-g
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: getColor().withOpacity(0.2),
+        color: _getColor().withOpacity(0.2),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: getColor()),
+        border: Border.all(color: _getColor()),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -33,15 +33,15 @@ g
             width: 6,
             height: 6,
             decoration: BoxDecoration(
-              color: getColor(),
+              color: _getColor(),
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: 5),
           Text(
-            level.toString().split('.').last.toUpperCase(),
+            _getLevelText(),
             style: TextStyle(
-              color: getColor(),
+              color: _getColor(),
               fontSize: 10,
               fontWeight: FontWeight.bold,
             ),
@@ -51,5 +51,3 @@ g
     );
   }
 }
-
-enum EnergyLevel { low, medium, high }

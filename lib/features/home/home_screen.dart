@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
 import '../../../core/constants/app_colors.dart';
@@ -16,7 +15,6 @@ import '../../../data/repositories/user_repository.dart';
 import '../../../routes/app_routes.dart';
 import '../../../widgets/custom_card.dart';
 import '../../../widgets/primary_button.dart';
-import '../../../widgets/app_appbar.dart';
 import 'widgets/lucky_card.dart';
 import 'widgets/energy_indicator.dart';
 
@@ -175,8 +173,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onPressed: () {
                   // Set notification for lucky time
                   NotificationService.scheduleLuckyTimeNotification(
-                    user,
-                    luckyTime.bestTime,
+                    DateTime.now(),
                   );
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -269,7 +266,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          DateUtils.getAstrologicalGreeting(),
+          app_date_utils.DateUtils.getAstrologicalGreeting(),
           style: TextStyle(
             color: Colors.white.withOpacity(0.7),
             fontSize: 14,
@@ -296,12 +293,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Row(
                 children: [
                   Text(
-                    user?.zodiacSign.symbol ?? '♈',
+                    '♈',
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    user?.zodiacSign.name ?? 'Aries',
+                    user?.zodiacSign ?? 'Aries',
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -327,6 +324,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildDailyInsight() {
     final user = ref.read(userRepositoryProvider).getCurrentUser();
+    if (user == null) {
+      return const SizedBox.shrink();
+    }
     final insight = AstrologyService.generateDailyInsight(user);
     
     return CustomCard(

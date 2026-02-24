@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../data/models/lucky_number_model.dart';
 
@@ -29,6 +30,23 @@ Generated on: ${DateTime.now().toLocal()}
 
   void _saveNumbers() {
     // Implement save to local storage
+  }
+
+  Color _getColorFromString(String colorName) {
+    switch (colorName.toLowerCase()) {
+      case 'gold':
+        return AppColors.gold;
+      case 'purple':
+        return AppColors.purple;
+      case 'blue':
+        return Colors.blue;
+      case 'red':
+        return Colors.red;
+      case 'green':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
   }
 
   @override
@@ -225,7 +243,7 @@ Generated on: ${DateTime.now().toLocal()}
                       children: [
                         Icon(
                           Icons.color_lens,
-                          color: luckyNumbers.luckyColor,
+                          color: _getColorFromString(luckyNumbers.luckyColor),
                           size: 20,
                         ),
                         const SizedBox(width: 8),
