@@ -21,8 +21,3 @@ Future<void> migrateToFirestore() async {
     "onboardingComplete": true,
   });
 }
-
-Future<void> clearLocalData() async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.clear();
-}
