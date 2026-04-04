@@ -1,23 +1,35 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/user_model.dart';
+import '../../core/models/user_model.dart';
+import '../local/local_storage.dart';
 
 class UserRepository {
-  UserProfile? getCurrentUser() {
-    // TODO: Implement with local storage or backend
-    return UserProfile(
-      id: '1',
-      name: 'User',
-      dateOfBirth: DateTime(1990, 1, 15),
-      zodiacSign: 'Capricorn',
-      birthPlace: 'Earth',
-    );
+  final LocalStorageService _storage;
+
+  UserRepository(this._storage);
+
+  Future<bool> saveUser(UserProfile user) async {
+    return await _storage.saveUserProfile(user);
   }
 
-  Future<void> saveUser(UserProfile user) async {
-    // TODO: Implement with local storage or backend
+  UserProfile? getCurrentUser() {
+    return _storage.getUserProfile();
+  }
+
+  bool hasUser() {
+    return _storage.hasUserProfile();
+  }
+
+  Future<bool> deleteUser() async {
+    return await _storage.deleteUserProfile();
+  }
+
+  Future<void> updateUserLotteryPreferences(List<String> lotteryTypes) async {
+    final user = _storage.getUserProfile();
+    if (user != null) {
+      final updatedUser = user.copyWith(
+        favoriteLotteryTypes: lotteryTypes,
+        lastUpdated: DateTime.now(),
+      );
+      await _storage.saveUserProfile(updatedUser);
+    }
   }
 }
-
-final userRepositoryProvider = Provider<UserRepository>((ref) {
-  return UserRepository();
-});
