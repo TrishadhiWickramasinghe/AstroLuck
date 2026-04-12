@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../core/models/user_model.dart';
 import '../../core/utils/numerology_utils.dart';
 import '../../core/utils/date_utils.dart' as app_date_utils;
@@ -71,21 +71,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   Future<void> _doSaveProfile() async {
+    final strings = AppLocalizations.of(context);
     // Validation
     if (_nameController.text.isEmpty) {
-      _showError('Please enter your name');
+      _showError(strings.errorEnterName);
       return;
     }
     if (_selectedDate == null) {
-      _showError('Please select your date of birth');
+      _showError(strings.errorSelectDob);
       return;
     }
     if (_placeController.text.isEmpty) {
-      _showError('Please enter your place of birth');
+      _showError(strings.errorEnterPlace);
       return;
     }
     if (_selectedLotteryTypes.isEmpty) {
-      _showError('Please select at least one lottery type');
+      _showError(strings.errorSelectLotteryType);
       return;
     }
 
@@ -124,7 +125,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       }
     } catch (e) {
       if (mounted) {
-        _showError('Error saving profile: $e');
+        _showError(AppLocalizations.of(context).errorSavingProfile);
       }
     } finally {
       if (mounted) {
@@ -144,9 +145,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.profileTitle),
+        title: Text(strings.profileTitle),
         backgroundColor: AppColors.darkPurple,
         elevation: 0,
       ),
@@ -161,7 +163,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             children: [
               // Subtitle
               Text(
-                AppStrings.profileSubtitle,
+                strings.profileSubtitle,
                 style: const TextStyle(
                   color: AppColors.lightGrey,
                   fontSize: 14,
@@ -171,7 +173,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
               // Name Field
               _buildTextField(
-                label: AppStrings.profileName,
+                label: strings.profileName,
                 controller: _nameController,
                 icon: Icons.person,
               ),
@@ -179,7 +181,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
               // Date of Birth
               _buildDateField(
-                label: AppStrings.profileDateOfBirth,
+                label: strings.profileDateOfBirth,
                 value: _selectedDate,
                 onTap: () => _selectDate(context),
               ),
@@ -187,16 +189,16 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
               // Time of Birth
               _buildTextField(
-                label: AppStrings.profileTimeOfBirth,
+                label: strings.profileTimeOfBirth,
                 controller: _timeController,
                 icon: Icons.access_time,
-                tooltip: 'HH:mm (Optional)',
+                tooltip: strings.timeHint,
               ),
               const SizedBox(height: 16),
 
               // Place of Birth
               _buildTextField(
-                label: AppStrings.profilePlaceOfBirth,
+                label: strings.profilePlaceOfBirth,
                 controller: _placeController,
                 icon: Icons.location_on,
               ),
@@ -214,7 +216,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  label: AppStrings.profileComplete,
+                  label: strings.profileComplete,
                   onPressed: _isLoading ? _noop : _saveProfile,
                   backgroundColor: AppColors.gold,
                   textColor: AppColors.darkPurple,
@@ -284,6 +286,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     required DateTime? value,
     required VoidCallback onTap,
   }) {
+    final strings = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -316,7 +319,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               children: [
                 Text(
                   value == null
-                      ? 'Select date'
+                      ? strings.selectDate
                       : '${value.day}/${value.month}/${value.year}',
                   style: TextStyle(
                     color: value == null ? AppColors.darkGrey : AppColors.white,
@@ -333,16 +336,17 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   Widget _buildGenderSelection() {
+    final strings = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
-            Icon(Icons.wc, color: AppColors.gold, size: 18),
-            SizedBox(width: 8),
+            const Icon(Icons.wc, color: AppColors.gold, size: 18),
+            const SizedBox(width: 8),
             Text(
-              AppStrings.profileGender,
-              style: TextStyle(
+              strings.profileGender,
+              style: const TextStyle(
                 color: AppColors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -354,9 +358,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         Wrap(
           spacing: 12,
           children: [
-            AppStrings.profileGenderMale,
-            AppStrings.profileGenderFemale,
-            AppStrings.profileGenderOther,
+            strings.profileGenderMale,
+            strings.profileGenderFemale,
+            strings.profileGenderOther,
           ].map((gender) {
             return ChoiceChip(
               label: Text(gender),
@@ -381,18 +385,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   Widget _buildLotteryTypeSelection() {
+    final strings = AppLocalizations.of(context);
     final lotteryTypes = LotteryUtils.getAvailableLotteryTypes();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
-            Icon(Icons.stars, color: AppColors.gold, size: 18),
-            SizedBox(width: 8),
+            const Icon(Icons.stars, color: AppColors.gold, size: 18),
+            const SizedBox(width: 8),
             Text(
-              AppStrings.profileLotteryTypes,
-              style: TextStyle(
+              strings.profileLotteryTypes,
+              style: const TextStyle(
                 color: AppColors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

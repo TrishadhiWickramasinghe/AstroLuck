@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../data/local/local_storage.dart';
 import '../../data/models/lottery_history_model.dart';
 import '../../data/repositories/lottery_repository.dart';
@@ -59,18 +59,19 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void _deleteEntry(String id) {
+    final strings = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBackground,
-        title: const Text(
-          AppStrings.confirmDelete,
+        title: Text(
+          strings.confirmDelete,
           style: TextStyle(color: AppColors.white),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(AppStrings.cancel),
+            child: Text(strings.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -78,13 +79,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
               _loadHistory();
               if (mounted) Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(AppStrings.deletedSuccessfully),
+                SnackBar(
+                  content: Text(strings.deletedSuccessfully),
                   backgroundColor: AppColors.success,
                 ),
               );
             },
-            child: const Text(AppStrings.delete),
+            child: Text(strings.delete),
           ),
         ],
       ),
@@ -93,9 +94,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.historyTitle),
+        title: Text(strings.historyTitle),
         backgroundColor: AppColors.darkPurple,
       ),
       body: Container(
@@ -116,7 +118,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     // Pattern Analysis Section
                     if (_analysis != null) ...[
                       Text(
-                        AppStrings.patternAnalysis,
+                        strings.patternAnalysis,
                         style: const TextStyle(
                           color: AppColors.gold,
                           fontSize: 18,
@@ -141,14 +143,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             const SizedBox(height: 16),
                             if (_analysis!.frequentDigits.isNotEmpty)
                               _buildAnalysisRow(
-                                label: AppStrings.frequentDigits,
+                                label: strings.frequentDigits,
                                 numbers: _analysis!.frequentDigits,
                                 color: AppColors.highEnergy,
                               ),
                             if (_analysis!.recommendThisWeek.isNotEmpty) ...[
                               const SizedBox(height: 12),
                               _buildAnalysisRow(
-                                label: AppStrings.recommendThisWeek,
+                                label: strings.recommendThisWeek,
                                 numbers: _analysis!.recommendThisWeek,
                                 color: AppColors.gold,
                               ),
@@ -156,7 +158,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             if (_analysis!.avoidThisWeek.isNotEmpty) ...[
                               const SizedBox(height: 12),
                               _buildAnalysisRow(
-                                label: AppStrings.avoidThisWeek,
+                                label: strings.avoidThisWeek,
                                 numbers: _analysis!.avoidThisWeek,
                                 color: AppColors.warning,
                               ),
@@ -172,7 +174,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${AppStrings.historyTitle} (${_history?.length ?? 0})',
+                          '${strings.historyTitle} (${_history?.length ?? 0})',
                           style: const TextStyle(
                             color: AppColors.gold,
                             fontSize: 18,
@@ -199,7 +201,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         padding: const EdgeInsets.all(32),
                         child: Center(
                           child: Text(
-                            AppStrings.noHistory,
+                            strings.noHistory,
                             style: const TextStyle(
                               color: AppColors.lightGrey,
                               fontSize: 14,
@@ -235,6 +237,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildHistoryCard(LotteryEntry entry) {
+    final strings = AppLocalizations.of(context);
     return CustomCard(
       backgroundColor: AppColors.cardBackground,
       padding: const EdgeInsets.all(12),
@@ -253,22 +256,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 ),
               ),
               if (entry.didWin)
-                const Chip(
-                  label: Text('🎉 Won!'),
+                Chip(
+                  label: Text(strings.historyWon),
                   backgroundColor: AppColors.highEnergy,
-                  labelStyle: TextStyle(color: AppColors.darkPurple),
+                  labelStyle: const TextStyle(color: AppColors.darkPurple),
                 )
               else
-                const Chip(
-                  label: Text('Played'),
+                Chip(
+                  label: Text(strings.historyPlayed),
                   backgroundColor: AppColors.lowEnergy,
-                  labelStyle: TextStyle(color: AppColors.darkPurple),
+                  labelStyle: const TextStyle(color: AppColors.darkPurple),
                 ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            'Numbers: ${entry.numbers.join(", ")}',
+            '${strings.historyNumbersLabel}${entry.numbers.join(", ")}',
             style: const TextStyle(
               color: AppColors.white,
               fontSize: 12,
@@ -276,7 +279,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Draw: ${entry.drawDate.toString().split(' ')[0]}',
+            '${strings.historyDrawLabel}${entry.drawDate.toString().split(' ')[0]}',
             style: const TextStyle(
               color: AppColors.lightGrey,
               fontSize: 11,
@@ -285,7 +288,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           if (entry.prizeAmount != null) ...[
             const SizedBox(height: 4),
             Text(
-              'Prize: ${entry.prizeAmount}',
+              '${strings.historyPrizeLabel}${entry.prizeAmount}',
               style: const TextStyle(
                 color: AppColors.mediumEnergy,
                 fontSize: 11,
@@ -381,10 +384,11 @@ class _AddEntryBottomSheetState extends State<_AddEntryBottomSheet> {
   }
 
   void _saveEntry() {
+    final strings = AppLocalizations.of(context);
     // Validation
     if (_selectedType == null || _numberController.text.isEmpty || _selectedDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all required fields')),
+        SnackBar(content: Text(strings.historyRequiredFields)),
       );
       return;
     }
@@ -394,6 +398,7 @@ class _AddEntryBottomSheetState extends State<_AddEntryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         gradient: AppColors.cosmicGradient,
@@ -405,8 +410,8 @@ class _AddEntryBottomSheetState extends State<_AddEntryBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              AppStrings.addEntry,
+            Text(
+              strings.addEntry,
               style: TextStyle(
                 color: AppColors.white,
                 fontSize: 18,
@@ -415,7 +420,7 @@ class _AddEntryBottomSheetState extends State<_AddEntryBottomSheet> {
             ),
             const SizedBox(height: 20),
             PrimaryButton(
-              label: 'Close',
+              label: strings.close,
               onPressed: () => Navigator.pop(context),
               backgroundColor: AppColors.gold,
               textColor: AppColors.darkPurple,

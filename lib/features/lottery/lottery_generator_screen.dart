@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../core/models/user_model.dart';
 import '../../core/models/lucky_number_model.dart';
 import '../../core/services/lucky_number_service.dart';
@@ -57,9 +57,10 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.generatorTitle),
+        title: Text(strings.generatorTitle),
         backgroundColor: AppColors.darkPurple,
       ),
       body: Container(
@@ -75,8 +76,8 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
               CustomCard(
                 backgroundColor: AppColors.cardBackground,
                 padding: const EdgeInsets.all(16),
-                child: const Text(
-                  '✨ Select a lottery type and generate your personalized lucky numbers based on your birth chart and cosmic energy!',
+                child: Text(
+                  strings.lotteryInfoMessage,
                   style: TextStyle(
                     color: AppColors.lightGrey,
                     fontSize: 13,
@@ -88,7 +89,7 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
 
               // Lottery Type Selection
               Text(
-                AppStrings.selectLotteryType,
+                strings.selectLotteryType,
                 style: const TextStyle(
                   color: AppColors.white,
                   fontSize: 14,
@@ -128,7 +129,7 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
               SizedBox(
                 width: double.infinity,
                 child: PrimaryButton(
-                  label: AppStrings.generateNumbers,
+                  label: strings.generateNumbers,
                   onPressed: _generateNumbers,
                   backgroundColor: AppColors.gold,
                   textColor: AppColors.darkPurple,
@@ -140,7 +141,7 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
               // Generated Numbers Display
               if (_generatedNumbers != null) ...[
                 Text(
-                  AppStrings.generatedNumbers,
+                  strings.generatedNumbers,
                   style: const TextStyle(
                     color: AppColors.gold,
                     fontSize: 18,
@@ -186,7 +187,7 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
                       const SizedBox(height: 24),
                       // Fortune message
                       Text(
-                        'Play these numbers with confidence! 🌟',
+                        strings.playWithConfidence,
                         style: const TextStyle(
                           color: AppColors.darkPurple,
                           fontSize: 14,
@@ -219,8 +220,8 @@ class _LotteryGeneratorScreenState extends State<LotteryGeneratorScreen> {
                           color: AppColors.gold.withOpacity(0.5),
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          'Select a lottery type and tap Generate',
+                        Text(
+                          strings.lotteryEmptyState,
                           style: TextStyle(
                             color: AppColors.lightGrey,
                             fontSize: 14,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../core/models/user_model.dart';
 import '../../core/models/lucky_number_model.dart';
 import '../../core/services/lucky_number_service.dart';
@@ -78,35 +78,38 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _refreshNumbers() {
+    final strings = AppLocalizations.of(context);
     _generateNewNumbers();
     setState(() {
       _isLoading = false;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Lucky numbers refreshed! ✨'),
-        duration: Duration(seconds: 2),
+      SnackBar(
+        content: Text(strings.luckyNumbersRefreshed),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
 
   void _shareNumbers() {
+    final strings = AppLocalizations.of(context);
     if (_luckyNumbers == null) return;
     
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Numbers copied to clipboard! 📋'),
+      SnackBar(
+        content: Text(strings.numbersCopied),
         backgroundColor: AppColors.success,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.appName),
+        title: Text(strings.appName),
         backgroundColor: AppColors.darkPurple,
         elevation: 0,
         actions: [
@@ -171,8 +174,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           onShare: _shareNumbers,
                           onSave: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Numbers saved! 💾'),
+                              SnackBar(
+                                content: Text(strings.numbersSaved),
                                 backgroundColor: AppColors.success,
                               ),
                             );
@@ -193,31 +196,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       if (_luckyNumbers != null) ...[
                         _buildInfoCard(
-                          title: AppStrings.zodiacSign,
+                          title: strings.zodiacSign,
                           value: _luckyNumbers!.zodiacInfluence,
                           icon: Icons.star,
                         ),
                         const SizedBox(height: 12),
                         _buildInfoCard(
-                          title: AppStrings.lifePathNumber,
+                          title: strings.lifePathNumber,
                           value: _luckyNumbers!.lifePathNumber.toString(),
                           icon: Icons.calculate,
                         ),
                         const SizedBox(height: 12),
                         _buildInfoCard(
-                          title: AppStrings.destinyNumber,
+                          title: strings.destinyNumber,
                           value: _luckyNumbers!.destinyNumber.toString(),
                           icon: Icons.lightbulb,
                         ),
                         const SizedBox(height: 12),
                         _buildInfoCard(
-                          title: AppStrings.planetaryDay,
+                          title: strings.planetaryDay,
                           value: _luckyNumbers!.planetaryDay,
                           icon: Icons.public,
                         ),
                         const SizedBox(height: 12),
                         _buildInfoCard(
-                          title: AppStrings.moonPhase,
+                          title: strings.moonPhase,
                           value: _luckyNumbers!.moonPhase,
                           icon: Icons.brightness_3,
                         ),
@@ -231,8 +234,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                '🔮 Daily Cosmic Insight',
+                              Text(
+                                strings.dailyCosmicInsight,
                                 style: TextStyle(
                                   color: AppColors.gold,
                                   fontSize: 14,
@@ -260,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Expanded(
                             child: _buildActionButton(
-                              label: 'Generate',
+                              label: strings.actionGenerate,
                               icon: Icons.casino,
                               onPressed: () {
                                 Navigator.of(context).pushNamed(AppRoutes.lotteryGenerator);
@@ -270,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildActionButton(
-                              label: 'History',
+                              label: strings.actionHistory,
                               icon: Icons.history,
                               onPressed: () {
                                 Navigator.of(context).pushNamed(AppRoutes.history);
@@ -288,8 +291,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           border: Border.all(color: AppColors.gold, width: 1),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Text(
-                          AppStrings.disclaimerText,
+                        child: Text(
+                          strings.disclaimerText,
                           style: TextStyle(
                             color: AppColors.lightGrey,
                             fontSize: 11,
@@ -307,22 +310,22 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: AppColors.gold,
         unselectedItemColor: AppColors.lightGrey,
         currentIndex: 0,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: AppStrings.home,
+            icon: const Icon(Icons.home),
+            label: strings.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.casino),
-            label: AppStrings.lottery,
+            icon: const Icon(Icons.casino),
+            label: strings.lottery,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: AppStrings.history,
+            icon: const Icon(Icons.history),
+            label: strings.history,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: AppStrings.settings,
+            icon: const Icon(Icons.settings),
+            label: strings.settings,
           ),
         ],
         onTap: (index) {
@@ -345,15 +348,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String getAstrologicalGreeting() {
+    final strings = AppLocalizations.of(context);
     final hour = DateTime.now().hour;
     if (hour < 6) {
-      return '🌙 Late Night Insights, Stargazer!';
+      return strings.greetingLateNight;
     } else if (hour < 12) {
-      return '🌅 Good Morning, Starseeker!';
+      return strings.greetingMorning;
     } else if (hour < 18) {
-      return '☀️ Good Afternoon, Celestial Friend!';
+      return strings.greetingAfternoon;
     } else {
-      return '🌙 Good Evening, Mystic Wanderer!';
+      return strings.greetingEvening;
     }
   }
 

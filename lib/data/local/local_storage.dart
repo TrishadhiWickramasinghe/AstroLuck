@@ -11,6 +11,7 @@ class LocalStorageService {
   static const String patternAnalysisKey = 'pattern_analysis';
   static const String appVisitKey = 'last_app_visit';
   static const String onboardingCompleteKey = 'onboarding_complete';
+  static const String languageKey = 'app_language';
 
   late SharedPreferences _prefs;
 
@@ -136,6 +137,15 @@ class LocalStorageService {
 
   bool isOnboardingComplete() {
     return _prefs.getBool(onboardingCompleteKey) ?? false;
+  }
+
+  // Language Preference
+  Future<bool> saveLanguageCode(String languageCode) async {
+    return await _prefs.setString(languageKey, languageCode);
+  }
+
+  String? getLanguageCode() {
+    return _prefs.getString(languageKey);
   }
 
   // App Visit Tracking

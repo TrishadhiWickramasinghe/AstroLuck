@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/constants/app_colors.dart';
+import '../core/localization/app_localizations.dart';
 
 class EnergyIndicator extends StatelessWidget {
   final int energyLevel;
@@ -17,8 +18,18 @@ class EnergyIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     final isHighEnergy = energyLevel >= 70;
     final isMediumEnergy = energyLevel >= 40 && energyLevel < 70;
+
+    final statusText = isHighEnergy
+      ? strings.highEnergy
+      : isMediumEnergy
+        ? strings.mediumEnergy
+        : strings.lowEnergy;
+    final displayStatus = strings.locale.languageCode == 'en'
+      ? energyStatus
+      : statusText;
     
     Color getEnergyColor() {
       if (isHighEnergy) return AppColors.highEnergy;
@@ -70,11 +81,7 @@ class EnergyIndicator extends StatelessWidget {
                     ),
                   ),
                 Text(
-                  isHighEnergy
-                      ? '🔥 High'
-                      : isMediumEnergy
-                          ? '⚡ Medium'
-                          : '🌙 Low',
+                  statusText,
                   style: TextStyle(
                     color: getEnergyColor(),
                     fontSize: 14,
@@ -87,7 +94,7 @@ class EnergyIndicator extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          energyStatus,
+          displayStatus,
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: AppColors.lightGrey,

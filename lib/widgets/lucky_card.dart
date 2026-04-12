@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/constants/app_colors.dart';
+import '../core/localization/app_localizations.dart';
 import '../data/models/lucky_number_model.dart';
 import 'custom_card.dart';
 
@@ -31,14 +32,15 @@ class LuckyNumberCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return CustomCard(
       gradient: AppColors.cosmicGradient,
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '✨ Your Lucky Numbers',
+          Text(
+            '✨ ${strings.yourLuckyNumbers}',
             style: TextStyle(
               color: AppColors.gold,
               fontSize: 18,
@@ -50,8 +52,8 @@ class LuckyNumberCard extends StatelessWidget {
           // Primary Numbers
           Row(
             children: [
-              const Text(
-                'Primary:',
+              Text(
+                '${strings.primaryNumbers}:',
                 style: TextStyle(
                   color: AppColors.lightGrey,
                   fontSize: 13,
@@ -93,8 +95,8 @@ class LuckyNumberCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Text(
-                      'Secondary:',
+                    Text(
+                      '${strings.secondaryNumbers}:',
                       style: TextStyle(
                         color: AppColors.lightGrey,
                         fontSize: 13,
@@ -138,8 +140,8 @@ class LuckyNumberCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Lucky Hour',
+                  Text(
+                    strings.luckyHour,
                     style: TextStyle(
                       color: AppColors.lightGrey,
                       fontSize: 11,
@@ -159,8 +161,8 @@ class LuckyNumberCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Lucky Color',
+                  Text(
+                    strings.luckyColorLabel,
                     style: TextStyle(
                       color: AppColors.lightGrey,
                       fontSize: 11,
@@ -209,7 +211,7 @@ class LuckyNumberCard extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: onShare,
                   icon: const Icon(Icons.share, size: 18),
-                  label: const Text('Share'),
+                  label: Text(strings.shareNumbers),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.gold,
                     foregroundColor: AppColors.darkPurple,
@@ -219,7 +221,7 @@ class LuckyNumberCard extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: onSave,
                   icon: const Icon(Icons.save, size: 18),
-                  label: const Text('Save'),
+                  label: Text(strings.saveNumbers),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.purple,
                     foregroundColor: AppColors.white,

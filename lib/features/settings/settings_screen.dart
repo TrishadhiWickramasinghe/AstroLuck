@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_strings.dart';
+import '../../core/localization/app_localizations.dart';
 import '../../core/models/user_model.dart';
 import '../../data/local/local_storage.dart';
 import '../../widgets/custom_card.dart';
@@ -48,17 +48,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showDisclaimer() {
+    final strings = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBackground,
-        title: const Text(
-          AppStrings.appName,
-          style: TextStyle(color: AppColors.gold),
+        title: Text(
+          strings.appName,
+          style: const TextStyle(color: AppColors.gold),
         ),
         content: SingleChildScrollView(
           child: Text(
-            AppStrings.disclaimer,
+            strings.disclaimer,
             style: const TextStyle(
               color: AppColors.white,
               fontSize: 13,
@@ -69,9 +70,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              AppStrings.close,
-              style: TextStyle(color: AppColors.gold),
+            child: Text(
+              strings.close,
+              style: const TextStyle(color: AppColors.gold),
             ),
           ),
         ],
@@ -80,22 +81,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _logout() {
+    final strings = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBackground,
-        title: const Text(
-          AppStrings.confirmLogout,
-          style: TextStyle(color: AppColors.white),
+        title: Text(
+          strings.confirmLogout,
+          style: const TextStyle(color: AppColors.white),
         ),
-        content: const Text(
-          AppStrings.logoutMessage,
-          style: TextStyle(color: AppColors.lightGrey),
+        content: Text(
+          strings.logoutMessage,
+          style: const TextStyle(color: AppColors.lightGrey),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(AppStrings.cancel),
+            child: Text(strings.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -107,9 +109,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 );
               }
             },
-            child: const Text(
-              AppStrings.logout,
-              style: TextStyle(color: AppColors.error),
+            child: Text(
+              strings.logout,
+              style: const TextStyle(color: AppColors.error),
             ),
           ),
         ],
@@ -118,22 +120,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _clearHistory() {
+    final strings = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.cardBackground,
-        title: const Text(
-          AppStrings.clearHistory,
-          style: TextStyle(color: AppColors.white),
+        title: Text(
+          strings.clearHistory,
+          style: const TextStyle(color: AppColors.white),
         ),
-        content: const Text(
-          AppStrings.clearHistoryMessage,
-          style: TextStyle(color: AppColors.lightGrey),
+        content: Text(
+          strings.clearHistoryMessage,
+          style: const TextStyle(color: AppColors.lightGrey),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(AppStrings.cancel),
+            child: Text(strings.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -141,15 +144,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               if (mounted) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(AppStrings.clearedSuccessfully),
+                  SnackBar(
+                    content: Text(strings.clearedSuccessfully),
                     backgroundColor: AppColors.success,
                   ),
                 );
               }
             },
-            child: const Text(
-              AppStrings.yes,
+            child: Text(
+              strings.yes,
               style: TextStyle(color: AppColors.error),
             ),
           ),
@@ -160,9 +163,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.settings),
+        title: Text(strings.settings),
         backgroundColor: AppColors.darkPurple,
       ),
       body: Container(
@@ -182,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                     // Profile Section
                     Text(
-                      AppStrings.profile,
+                      strings.profile,
                       style: const TextStyle(
                         color: AppColors.gold,
                         fontSize: 18,
@@ -198,22 +202,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           if (_user != null) ...[
                             _buildInfoRow(
-                              label: AppStrings.name,
+                              label: strings.name,
                               value: _user!.name,
                             ),
                             const SizedBox(height: 12),
                             _buildInfoRow(
-                              label: AppStrings.dateOfBirth,
+                              label: strings.dateOfBirth,
                               value: _user!.dateOfBirth.toString().split(' ')[0],
                             ),
                             const SizedBox(height: 12),
                             _buildInfoRow(
-                              label: AppStrings.zodiacSign,
-                              value: _user!.zodiacSign ?? 'Unknown',
+                              label: strings.zodiacSign,
+                              value: _user!.zodiacSign ?? strings.unknown,
                             ),
                             const SizedBox(height: 16),
                             PrimaryButton(
-                              label: AppStrings.editProfile,
+                              label: strings.editProfile,
                               onPressed: _editProfile,
                               backgroundColor: AppColors.gold,
                               textColor: AppColors.darkPurple,
@@ -226,7 +230,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     // Data Management Section
                     Text(
-                      AppStrings.dataManagement,
+                      strings.dataManagement,
                       style: const TextStyle(
                         color: AppColors.gold,
                         fontSize: 18,
@@ -241,7 +245,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           _buildSettingTile(
                             icon: Icons.history,
-                            label: AppStrings.clearHistory,
+                            label: strings.clearHistory,
                             onTap: _clearHistory,
                             textColor: AppColors.warning,
                           ),
@@ -251,7 +255,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           _buildSettingTile(
                             icon: Icons.logout,
-                            label: AppStrings.logout,
+                            label: strings.logout,
                             onTap: _logout,
                             textColor: AppColors.error,
                           ),
@@ -262,7 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     // Information Section
                     Text(
-                      AppStrings.information,
+                      strings.information,
                       style: const TextStyle(
                         color: AppColors.gold,
                         fontSize: 18,
@@ -275,7 +279,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       padding: EdgeInsets.zero,
                       child: _buildSettingTile(
                         icon: Icons.info,
-                        label: AppStrings.disclaimer,
+                        label: strings.disclaimer,
                         onTap: _showDisclaimer,
                       ),
                     ),
@@ -288,7 +292,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: Column(
                         children: [
                           Text(
-                            AppStrings.appName,
+                            strings.appName,
                             style: const TextStyle(
                               color: AppColors.gold,
                               fontSize: 16,
@@ -297,7 +301,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            AppStrings.appVersion,
+                            strings.appVersion,
                             style: const TextStyle(
                               color: AppColors.lightGrey,
                               fontSize: 12,
@@ -305,7 +309,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            AppStrings.appTagline,
+                            strings.appTagline,
                             style: const TextStyle(
                               color: AppColors.mediumEnergy,
                               fontSize: 13,
