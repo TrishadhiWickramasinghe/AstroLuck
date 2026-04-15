@@ -16,8 +16,8 @@ class AppRoutes {
   static const String history = '/history';
   static const String settings = '/settings';
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    final name = settings.name ?? splash;
+  static Route<dynamic> generateRoute(RouteSettings routeSettings) {
+    final name = routeSettings.name ?? splash;
     if (name == splash) {
       return MaterialPageRoute(builder: (_) => const SplashScreen());
     } else if (name == onboarding) {
@@ -38,7 +38,7 @@ class AppRoutes {
       return MaterialPageRoute(
         builder: (_) => Scaffold(
           body: Center(
-            child: Text('No route defined for ${settings.name}'),
+            child: Text('No route defined for ${routeSettings.name}'),
           ),
         ),
       );

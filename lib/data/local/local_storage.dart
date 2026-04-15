@@ -12,6 +12,7 @@ class LocalStorageService {
   static const String appVisitKey = 'last_app_visit';
   static const String onboardingCompleteKey = 'onboarding_complete';
   static const String languageKey = 'app_language';
+  static const String notificationsKey = 'notifications_enabled';
 
   late SharedPreferences _prefs;
 
@@ -146,6 +147,15 @@ class LocalStorageService {
 
   String? getLanguageCode() {
     return _prefs.getString(languageKey);
+  }
+
+  // Notification Preferences
+  Future<bool> setNotificationsEnabled(bool enabled) async {
+    return await _prefs.setBool(notificationsKey, enabled);
+  }
+
+  bool getNotificationsEnabled() {
+    return _prefs.getBool(notificationsKey) ?? true;
   }
 
   // App Visit Tracking
