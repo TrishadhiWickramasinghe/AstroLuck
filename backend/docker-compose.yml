@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-astroluck_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-astroluck_password}
+      POSTGRES_DB: ${DB_NAME:-astroluck_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U astroluck_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-astroluck_user}:${DB_PASSWORD:-astroluck_password}@db:5432/${DB_NAME:-astroluck_db}
+      DEBUG: ${DEBUG:-False}
+      SECRET_KEY: ${SECRET_KEY:-change-this-in-production}
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:
