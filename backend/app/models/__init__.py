@@ -22,6 +22,11 @@ from .ai_insights_models import (
     InsightEngagementLog, UserInsightPreference,
     InsightHistory, InsightFeedback, InsightGenerationLog
 )
+from .statistics_models import (
+    HotColdNumber, TrendData, WinningPattern,
+    UserStatistics, NumberAnalysis, EngagementMetric,
+    StatisticsDashboardConfig
+)
 
 __all__ = [
     "User", "LotteryHistory", "UserAnalytics", "LuckyShare",
@@ -39,5 +44,8 @@ __all__ = [
     "LotteryResults", "UserTicket", "TicketVerification", "LotteryResultsSync",
     "DailyInsight", "DailyInsightPersonalized",
     "InsightEngagementLog", "UserInsightPreference",
-    "InsightHistory", "InsightFeedback", "InsightGenerationLog"
+    "InsightHistory", "InsightFeedback", "InsightGenerationLog",
+    "HotColdNumber", "TrendData", "WinningPattern",
+    "UserStatistics", "NumberAnalysis", "EngagementMetric",
+    "StatisticsDashboardConfig"
 ]
