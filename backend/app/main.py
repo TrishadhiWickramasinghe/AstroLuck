@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api import auth_router, users_router, community_router
-from app.api.routes import insights, payments, pools, astrologers, intelligence, social, integrations
+from app.api.routes import insights, payments, pools, astrologers, intelligence, social, integrations, statistics
 from app.db import engine
 from app.models import Base
 
@@ -38,6 +38,7 @@ app.include_router(astrologers.router)
 app.include_router(intelligence.router)
 app.include_router(social.router)
 app.include_router(integrations.router)
+app.include_router(statistics.router)
 
 
 @app.get("/")
